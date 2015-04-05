@@ -3,6 +3,7 @@
 import cmath
 import math
 import png
+import sys
 from threading import Thread
 
 def clamp(x, l, h):
@@ -66,6 +67,7 @@ def calculate(a, y_low, y_high, step):
             a[y].append(col[2])
 
 
+filename = sys.argv[1] if len(sys.argv) > 1 else "out.png"
 NUM_THREADS = 4
 dim_x = 2000
 dim_y = 2000
@@ -84,5 +86,5 @@ wi = len(a[0]) / 3
 he = len(a)
 print wi, he
 w = png.Writer(wi, he)
-with open("out.png", "wb") as f:
+with open(filename, "wb") as f:
     w.write(f, a)
