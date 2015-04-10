@@ -36,8 +36,6 @@ def fakelog(x):
 
 def log_color(val, lo, hi):
     return heatmap_color(fakelog(1 + val / hi), fakelog(1 + lo / hi), fakelog(2))
-    #return heatmap_color(math.log(1 + val / hi), math.log(1 + lo / hi), math.log(2))
-    #return heatmap_color(math.log(val), math.log(lo), math.log(hi))
 
 def mandelbrot(z0):
     max_it = 255
