@@ -64,25 +64,28 @@ def calculate(a, y_low, y_high, step):
             a[y].append(col[1])
             a[y].append(col[2])
 
+def main():
+    filename = sys.argv[1] if len(sys.argv) > 1 else "out.png"
+    NUM_THREADS = 4
+    dim_x = 2000
+    dim_y = 2000
+    batch_size = dim_y // NUM_THREADS
+    if dim_y % NUM_THREADS > 0:
+        batch_size += 1
+    a = [[] for i in xrange(dim_y)]
+    threads = []
+    for batch in xrange(NUM_THREADS):
+        threads.append(Thread(target = calculate, args=(a, batch, dim_y, NUM_THREADS)))
+            #batch * batch_size, (batch + 1) * batch_size)))
+        threads[batch].start()
+    for t in threads:
+        t.join()
+    wi = len(a[0]) / 3
+    he = len(a)
+    print wi, he
+    w = png.Writer(wi, he)
+    with open(filename, "wb") as f:
+        w.write(f, a)
 
-filename = sys.argv[1] if len(sys.argv) > 1 else "out.png"
-NUM_THREADS = 4
-dim_x = 2000
-dim_y = 2000
-batch_size = dim_y // NUM_THREADS
-if dim_y % NUM_THREADS > 0:
-    batch_size += 1
-a = [[] for i in xrange(dim_y)]
-threads = []
-for batch in xrange(NUM_THREADS):
-    threads.append(Thread(target = calculate, args=(a, batch, dim_y, NUM_THREADS)))
-        #batch * batch_size, (batch + 1) * batch_size)))
-    threads[batch].start()
-for t in threads:
-    t.join()
-wi = len(a[0]) / 3
-he = len(a)
-print wi, he
-w = png.Writer(wi, he)
-with open(filename, "wb") as f:
-    w.write(f, a)
+if __name__ == "__main__":
+    main()
