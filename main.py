@@ -4,7 +4,6 @@ import cmath
 import math
 import png
 import sys
-from threading import Thread
 
 
 def clamp(x, l, h):
@@ -59,10 +58,10 @@ def mandelbrot(z0):
         return log_color(1.0 * it, 0.0, 1.0 * max_it)
 
 
-def calculate(a, y_low, y_high, step):
-    for y in xrange(y_low, y_high, step):
-        if ((y - y_low) / step) % 10 == 0:
-            print "%d%% done" % ((100 * (y - y_low)) // (y_high - y_low))
+def calculate(a, dim_x, dim_y):
+    for y in xrange(dim_y):
+        if y % 10 == 0:
+            print "%d%% done" % ((100 * y) // dim_y)
         for x in xrange(dim_x):
             z = complex(-2.5 + x * 3.5 / dim_x,
                         1.25 - y * 2.5 / dim_y)
@@ -74,20 +73,10 @@ def calculate(a, y_low, y_high, step):
 
 def main():
     filename = sys.argv[1] if len(sys.argv) > 1 else "out.png"
-    NUM_THREADS = 4
     dim_x = 2000
     dim_y = 2000
-    batch_size = dim_y // NUM_THREADS
-    if dim_y % NUM_THREADS > 0:
-        batch_size += 1
     a = [[] for i in xrange(dim_y)]
-    threads = []
-    for batch in xrange(NUM_THREADS):
-        threads.append(Thread(target=calculate,
-                              args=(a, batch, dim_y, NUM_THREADS)))
-        threads[batch].start()
-    for t in threads:
-        t.join()
+    calculate(a, dim_x, dim_y)
     wi = len(a[0]) / 3
     he = len(a)
     print wi, he
