@@ -35,3 +35,7 @@ def log_color(val, lo, hi):
     return heatmap_color(fakelog(1 + val / hi),
                          fakelog(1 + lo / hi),
                          fakelog(2))
+
+
+def linear_color(val, lo, hi):
+    return heatmap_color(val, lo, hi)
