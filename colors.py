@@ -13,8 +13,6 @@ def flt_to_byte(*args):
 
 
 def heatmap_color(val, lo, hi):
-    if val > hi or val < lo:
-        return flt_to_byte(1.0, 0.0, 1.0)
     val = clamp(val, lo, hi)
     m = [0, 0, 0]
     for i in xrange(3):
