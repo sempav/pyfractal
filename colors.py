@@ -3,6 +3,7 @@ def clamp(x, l, h):
 
 
 def norclamp(x, l, h):
+    ''' clamp and normalize '''
     return (clamp(x, l, h) - l) / (h - l)
 
 
