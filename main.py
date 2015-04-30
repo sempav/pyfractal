@@ -54,7 +54,7 @@ def parse_arguments():
     parser.add_argument('--out', type=str,
                         help="output file name (default: %(default)s)",
                         default="out.png")
-    parser.add_argument('--borders', metavar=('L', 'R', 'U', 'D'), type=float, nargs=4,
+    parser.add_argument('--borders', metavar=('L', 'R', 'D', 'U'), type=float, nargs=4,
                         help="four values representing fractal borders (default: %(default)s)",
                         default=[-1.0, 1.0, -1.0, 1.0])
     parser.add_argument('--fractal', choices=['mandelbrot', 'burning_ship'],
