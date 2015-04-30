@@ -2,10 +2,11 @@
 
 import png
 import sys
+import inspect
+import argparse
 
 import colors
 import fractals
-import argparse
 from rect import Rect
 
 
@@ -46,6 +47,8 @@ def main(args):
 def parse_arguments():
     ''' parse arguments for the PyFractal application '''
 
+    fractals_dispatcher = dict(inspect.getmembers(fractals, callable))
+
     parser = argparse.ArgumentParser(description='Python fractals renderer')
 
     parser.add_argument('--resolution', metavar=('X', 'Y'), type=int, nargs=2,
@@ -57,9 +60,10 @@ def parse_arguments():
     parser.add_argument('--borders', metavar=('L', 'R', 'D', 'U'), type=float, nargs=4,
                         help="four values representing fractal borders (default: %(default)s)",
                         default=[-1.0, 1.0, -1.0, 1.0])
-    parser.add_argument('--fractal', choices=['mandelbrot', 'burning_ship'],
+    parser.add_argument('--fractal', choices=fractals_dispatcher.keys(),
                         help='name of the fractal (default: %(default)s)',
-                        default='mandelbrot')
+                        default=('mandelbrot' if fractals_dispatcher.has_key('mandelbrot')
+                                              else fractals_dispatcher.values()[0]))
     parser.add_argument('--cmap', choices=['heat', 'heat_log'],
                         help='color map used to represent the fractal (default: %(default)s)',
                         default='heat_log')
@@ -67,10 +71,6 @@ def parse_arguments():
     cmap_dispatcher = {
         'heat_log': colors.log_color,
         'heat': colors.linear_color
-    }
-    fractals_dispatcher = {
-        'mandelbrot': fractals.mandelbrot,
-        'burning_ship': fractals.burning_ship
     }
 
     args = parser.parse_args()
